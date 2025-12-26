@@ -1,0 +1,26 @@
+# Gradle
+.gradle/
+build/
+gradle-app.setting
+!gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+
+# Xcode
+xcuserdata/
+*.xcworkspace
+!default.xcworkspace
+DerivedData/
+.swiftpm/
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+# KMP
+shared/build/
+*.framework

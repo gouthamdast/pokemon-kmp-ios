@@ -1,0 +1,5 @@
+// Pokemon Build Configuration
+
+FRAMEWORK_SEARCH_PATHS = $(inherited) $(PROJECT_DIR)/Frameworks $(PROJECT_DIR)/shared/build/bin/iosSimulatorArm64/debugFramework
+OTHER_LDFLAGS = $(inherited) -framework shared
+CLANG_ENABLE_MODULES = YES
