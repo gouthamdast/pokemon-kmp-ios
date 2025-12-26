@@ -34,6 +34,25 @@ struct PokemonDetailView: View {
 
                         // Type Effectiveness
                         TypeEffectivenessView(types: pokemon.types)
+
+                        // Compare Button
+                        NavigationLink(destination: PokemonComparisonView(pokemon1: pokemon)) {
+                            Label("Compare with Another Pokémon", systemImage: "scale.3d")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(
+                                    LinearGradient(
+                                        colors: [Color.blue, Color.purple],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .cornerRadius(12)
+                                .shadow(color: Color.blue.opacity(0.3), radius: 5, x: 0, y: 3)
+                        }
+                        .padding(.top, 8)
                     }
                     .padding()
                 }
