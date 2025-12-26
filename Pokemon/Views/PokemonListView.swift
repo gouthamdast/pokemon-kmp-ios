@@ -10,6 +10,7 @@ import SwiftUI
 struct PokemonListView: View {
     @StateObject private var viewModel = PokemonViewModel()
     @State private var selectedPokemon: PokemonListItem?
+    @State private var showFilterSheet = false
 
     var body: some View {
         NavigationView {
@@ -64,6 +65,32 @@ struct PokemonListView: View {
                 }
             }
             .navigationTitle("Pokédex")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showFilterSheet = true
+                    }) {
+                        ZStack(alignment: .topTrailing) {
+                            Image(systemName: viewModel.activeFilterCount > 0 ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                                .font(.title3)
+                                .foregroundColor(viewModel.activeFilterCount > 0 ? .blue : .primary)
+
+                            if viewModel.activeFilterCount > 0 {
+                                Text("\(viewModel.activeFilterCount)")
+                                    .font(.system(size: 10, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .padding(4)
+                                    .background(Color.red)
+                                    .clipShape(Circle())
+                                    .offset(x: 8, y: -8)
+                            }
+                        }
+                    }
+                }
+            }
+            .sheet(isPresented: $showFilterSheet) {
+                FilterView(filterOptions: $viewModel.filterOptions)
+            }
             .onAppear {
                 if viewModel.pokemonList.isEmpty {
                     viewModel.loadPokemon(refresh: true)

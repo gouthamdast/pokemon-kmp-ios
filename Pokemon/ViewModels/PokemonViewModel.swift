@@ -15,14 +15,42 @@ class PokemonViewModel: ObservableObject {
     @Published var pokemonList: [PokemonListItem] = []
     @Published var loadingState: LoadingState<[PokemonListItem]> = .idle
     @Published var searchText: String = ""
+    @Published var filterOptions: FilterOptions = FilterOptions()
 
     private let sdk = PokemonSDKiOS()
 
     var filteredPokemon: [PokemonListItem] {
-        if searchText.isEmpty {
-            return pokemonList
+        var result = pokemonList
+
+        // Apply search filter
+        if !searchText.isEmpty {
+            result = result.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
-        return pokemonList.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+
+        // Apply sorting
+        switch filterOptions.sortOption {
+        case .numberAscending:
+            result = result.sorted { $0.id < $1.id }
+        case .numberDescending:
+            result = result.sorted { $0.id > $1.id }
+        case .nameAscending:
+            result = result.sorted { $0.name < $1.name }
+        case .nameDescending:
+            result = result.sorted { $0.name > $1.name }
+        }
+
+        return result
+    }
+
+    var activeFilterCount: Int {
+        var count = 0
+        if !filterOptions.selectedTypes.isEmpty {
+            count += filterOptions.selectedTypes.count
+        }
+        if filterOptions.sortOption != .numberAscending {
+            count += 1
+        }
+        return count
     }
 
     func loadPokemon(refresh: Bool = false) {
